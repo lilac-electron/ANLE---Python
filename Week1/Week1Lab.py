@@ -13,6 +13,15 @@ def count_lines_words_characters(file_path):
             words = content.split() #split by default (spacers used as delimiter)
             word_count = len(words)
 
+            total_len=0
+            for word in content.split():
+                total_len += len(word)
+            total_avg = total_len/word_count
+
+            letters = [char.lower()for char in content if char.isalpha()]
+            freq_dict = dict()
+            for letter in letters:
+                if letter not in freq_dict:
                     freq_dict[letter] = 1
                 else:
                     freq_dict[letter] += 1
