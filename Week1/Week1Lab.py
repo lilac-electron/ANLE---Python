@@ -1,3 +1,5 @@
+import argparse
+
 def count_lines_words_characters(file_path):
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -19,7 +21,11 @@ def count_lines_words_characters(file_path):
 
 
 if __name__ == "__main__":
-    file_path = "sample.txt"
+    parser = argparse.ArgumentParser(description="Count lines, words, and characters in a text file.")
+    parser.add_argument('file_path', help="Path to the text file")
+    args = parser.parse_args()
+
+    result = count_lines_words_characters(args.file_path)
     result = count_lines_words_characters(file_path)
 
     if result is not None:
