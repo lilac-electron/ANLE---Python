@@ -44,7 +44,10 @@ if __name__ == "__main__":
     parser.add_argument('file_path', help="Path to the text file")
     args = parser.parse_args()
 
-    result = count_lines_words_characters(args.file_path)
+    if args.file_path is not None:
+        result = count_lines_words_characters(args.file_path)
+    else:
+        result = count_lines_words_characters('sample.txt')
     
 
     if result is not None:
@@ -54,8 +57,8 @@ if __name__ == "__main__":
         print(f"Number of characters: {char_count}")
         print(f"Average word length: {total_avg}")
         print(f"Most frequent letters: {list_of_letters}")
+
         plotdata = pd.DataFrame.from_dict(all_letters, orient='index')
-        
 
         plotdata.plot(kind="bar",figsize=(15, 8))
 
@@ -66,3 +69,4 @@ if __name__ == "__main__":
         plt.ylabel("Freq of letter")
 
         plt.show()
+        #print(plotdata)
