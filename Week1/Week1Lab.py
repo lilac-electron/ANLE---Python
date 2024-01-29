@@ -1,4 +1,6 @@
 import argparse
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def count_lines_words_characters(file_path):
     try:
@@ -11,9 +13,17 @@ def count_lines_words_characters(file_path):
             words = content.split() #split by default (spacers used as delimiter)
             word_count = len(words)
 
+                    freq_dict[letter] = 1
+                else:
+                    freq_dict[letter] += 1
+            temp = max(freq_dict.values())
+            list_of_frequent_letters = [letter for letter in freq_dict if freq_dict[letter] == temp]
+
+
             char_count = len(content) #counts characters
 
-            return line_count, word_count, char_count
+
+            return line_count, word_count, char_count, total_avg, list_of_frequent_letters, freq_dict
 
     except FileNotFoundError:
         print(f"Error: File '{file_path}' not found.")
@@ -26,10 +36,36 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     result = count_lines_words_characters(args.file_path)
-    result = count_lines_words_characters(file_path)
+    
 
     if result is not None:
-        line_count, word_count, char_count = result
+        line_count, word_count, char_count, total_avg, list_of_letters, all_letters = result
         print(f"Number of lines: {line_count}")
         print(f"Number of words: {word_count}")
         print(f"Number of characters: {char_count}")
+        print(f"Average word length: {total_avg}")
+        print(f"Most frequent letters: {list_of_letters}")
+
+        
+        #plotdata = pd.DataFrame({
+
+         #   "2018":[57,67,77,83],
+
+          #  "2019":[68,73,80,79],
+
+           # "2020":[73,78,80,85]},
+
+            #index=["Django", "Gafur", "Tommy", "Ronnie"])
+        plotdata = pd.DataFrame.from_dict(all_letters, orient='index')
+        
+
+        plotdata.plot(kind="bar",figsize=(15, 8))
+
+        plt.title("Letter Frequencies")
+
+        plt.xlabel("Letters")
+
+        plt.ylabel("Freq of letter")
+
+        plt.show()
+        
