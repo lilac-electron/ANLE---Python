@@ -54,17 +54,6 @@ if __name__ == "__main__":
         print(f"Number of characters: {char_count}")
         print(f"Average word length: {total_avg}")
         print(f"Most frequent letters: {list_of_letters}")
-
-        
-        #plotdata = pd.DataFrame({
-
-         #   "2018":[57,67,77,83],
-
-          #  "2019":[68,73,80,79],
-
-           # "2020":[73,78,80,85]},
-
-            #index=["Django", "Gafur", "Tommy", "Ronnie"])
         plotdata = pd.DataFrame.from_dict(all_letters, orient='index')
         
 
@@ -77,4 +66,3 @@ if __name__ == "__main__":
         plt.ylabel("Freq of letter")
 
         plt.show()
-        
