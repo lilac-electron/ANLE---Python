@@ -3,6 +3,8 @@ from nltk.corpus import wordnet as wn, wordnet_ic as wn_ic, lin_thesaurus as lin
 import scipy
 from scipy import stats
 from gensim.models import KeyedVectors
+import matplotlib.pyplot as plt
+import numpy as np
 
 import ssl
 import csv
@@ -95,8 +97,8 @@ def judgePVal(p):
         print("Reject hypothesis as p less than 0.05")
 #cor, p = scipy.stats.spearmanr(resList, linList)
 #judgePVal(p)
-print(scipy.stats.spearmanr(resList, huObv))
-print(scipy.stats.spearmanr(linList, huObv))
+#print(scipy.stats.spearmanr(resList, huObv))
+#print(scipy.stats.spearmanr(linList, huObv))
 
 filename = 'Week2/wk2labresources/GoogleNews-vectors-negative300.bin'
 mymodel = KeyedVectors.load_word2vec_format(filename, binary=True)
@@ -107,8 +109,18 @@ for key in mcdata_dict.keys():
     googleDict[key] = mymodel.similarity(key[0], key[1])
     googleSimList.append(mymodel.similarity(key[0], key[1]))
 #print(googleDict)
-print(scipy.stats.spearmanr(googleSimList, huObv))
-print(scipy.stats.spearmanr(googleSimList, resList))
-print(scipy.stats.spearmanr(googleSimList, linList))
+
+#print(scipy.stats.spearmanr(googleSimList, huObv))
+#print(scipy.stats.spearmanr(googleSimList, resList))
+#print(scipy.stats.spearmanr(googleSimList, linList))
+
 #print(mcdata_dict)
-    
+cor, p = scipy.stats.spearmanr(resList, googleSimList)
+plt.scatter(x=resList, y=googleSimList)
+plt.plot(np.unique(resList), np.poly1d(np.polyfit(resList, googleSimList, 1))(np.unique(resList)), color='orange')
+#plt.plot(scipy.stats.linregress(resList, googleSimList))
+plt.text(5, 0.4, ('P: ', p ,', correlation: ',cor), fontsize=8, bbox=dict(facecolor='red', alpha=0.5))
+plt.xlabel("Resnik Similarity Scores")
+plt.ylabel("Google Similarity Scores")
+plt.title('Resnik VS Google Scatter')
+plt.show()
